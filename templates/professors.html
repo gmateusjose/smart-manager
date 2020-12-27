@@ -1,8 +1,27 @@
 {% extends "layout.html" %}
 
 {% block body %}
-	<h1>Professors</h1>
+<h1>Professors</h1>
 	<legend>Add a new teacher:</legend>
+	<form action="/professors" method="post">
+		<input type="text" name="add-field" placeholder="Teacher's name">
+		<button type="submit" name="add-button">Add</button>
+	</form>
+
 	<legend>Remove a teacher:</legend>
-	<legend>List teachers:</legend>
+	<form action="/professors" method="post">
+		<select id="rem-field" name="rem-field">
+			<option value="teacher 1">teacher 1</option>
+			<option value="teacher 2">teacher 2</option>
+			<option value="teacher 3">teacher 3</option>
+		</select>
+		<button type="submit" name="remove-button">Remove</button>
+	</form>
+	
+	<legend>Teachers:</legend>
+	<ul>
+		<li>teacher 1</li>
+		<li>teacher 2</li>
+		<li>teacher 3</li>
+	</ul>
 {% endblock %}
