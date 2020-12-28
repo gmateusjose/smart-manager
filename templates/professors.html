@@ -11,17 +11,18 @@
 	<legend>Remove a teacher:</legend>
 	<form action="/professors" method="post">
 		<select id="rem-field" name="rem-field">
-			<option value="teacher 1">teacher 1</option>
-			<option value="teacher 2">teacher 2</option>
-			<option value="teacher 3">teacher 3</option>
+			<option value="">Select a teacher</option>
+			{% for professor in professors %}
+				<option value="{{ professor }}">{{ professor }}</option>
+			{% endfor %}
 		</select>
 		<button type="submit" name="remove-button">Remove</button>
 	</form>
 	
 	<legend>Teachers:</legend>
 	<ul>
-		<li>teacher 1</li>
-		<li>teacher 2</li>
-		<li>teacher 3</li>
+		{% for professor in professors %}
+			<li>{{ professor }}</li>
+		{% endfor %}
 	</ul>
 {% endblock %}
