@@ -16,18 +16,26 @@ def index():
 def professors():
     # Define a route to deal with professors
     if request.method == 'POST':
-        print(request.form.keys())
-        # Deciding if the form will add or will delete
-        conn = sqlite3.connect('smart-fluent.db')
-        c = conn.cursor() 
+        if 'rem-field' in request.form.keys():
+            conn = sqlite3.connect('smart-fluent.db')
+            c = conn.cursor()
+            c.executescript(open('queries/create_tables.sql').read())
+            professor = (request.form.get('rem-field'),)
+            c.execute('''DELETE FROM professors WHERE name = ? ''', professor)
+            conn.commit()
+            conn.close()
+        else:
+            # Deciding if the form will add or will delete
+            conn = sqlite3.connect('smart-fluent.db')
+            c = conn.cursor() 
     
-        # Creating all the pertinent tables
-        c.executescript(open('queries/create_tables.sql').read())
-        professor = (request.form.get('add-field'),)
+            # Creating all the pertinent tables
+            c.executescript(open('queries/create_tables.sql').read())
+            professor = (request.form.get('add-field'),)
         
-        c.execute('''INSERT INTO professors (name) VALUES (?)''', professor)
-        conn.commit()
-        conn.close()
+            c.execute('''INSERT INTO professors (name) VALUES (?)''', professor)
+            conn.commit()
+            conn.close()
         return redirect('/professors')
     else:
         conn = sqlite3.connect('smart-fluent.db')
