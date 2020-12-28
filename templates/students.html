@@ -7,7 +7,7 @@
 	<form action="/students" method="post">
 		<input type="text" id="add-field" name="add-field" placeholder="Student's name">
 		<label for="scholar">scholar</label>
-		<input type="checkbox" id="scholar" name="scholar" value="Scholarship">
+		<input type="checkbox" id="scholar" name="scholar" value="scholar">
 		<input type="number" id="value" name="value" placeholder="Monthly payment" min="0">
 		<label for="teacher">Teacher</label>
 		<select id="teacher" name="teacher">
@@ -36,6 +36,13 @@
 			<th>Scholarship</th>
 		</tr>
 		{% for student in students %}
+			<tr>
+				<td>{{ student[0] }}</td>
+				<td>{{ student[1] }}</td>
+				<td>{{ student[2] }}</td>
+				<td>{{ student[3] }}</td>
+				<td>{{ student[4] }}</td>
+			</tr>
 		{% endfor %}
 	</table>
 {% endblock %}
