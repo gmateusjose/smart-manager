@@ -1,0 +1,10 @@
+# Git ignore files
+
+
+## Flask and python ##
+__pycache__/
+venv/
+.pyc
+
+## Vim files ##
+.swp
