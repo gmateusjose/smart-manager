@@ -16,21 +16,15 @@ def index():
 def professors():
     # Define a route to deal with professors
     if request.method == 'POST':
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+
         if 'rem-field' in request.form.keys():
-            conn = sqlite3.connect('smart-fluent.db')
-            c = conn.cursor()
-            c.executescript(open('queries/create_tables.sql').read())
-            professor = (request.form.get('rem-field').strip().lower(),)
+            professor = (request.form.get('rem-field').lower().strip(),)
             c.execute('''DELETE FROM professors WHERE name = ? ''', professor)
-            conn.commit()
-            conn.close()
         else:
-            conn = sqlite3.connect('smart-fluent.db')
-            c = conn.cursor() 
-    
-            c.executescript(open('queries/create_tables.sql').read())
-            professor = (request.form.get('add-field').strip().lower(),)
-            
+            professor = (request.form.get('add-field').lower().strip(),)
             try:
                 c.execute('''INSERT INTO professors (name) VALUES (?)''', professor)
             except:
@@ -40,16 +34,13 @@ def professors():
                 return render_template('professors.html', \
                     professors=professors, error_msg=error_msg)
 
-            conn.commit()
-            conn.close()
+        conn.commit()
+        conn.close()
         return redirect('/professors')
     else:
         conn = sqlite3.connect('smart-fluent.db')
         c = conn.cursor() 
-    
-        # Creating the professors table
         c.executescript(open('queries/create_tables.sql').read()) 
-        
         professors = [row[0].title() for row in c.execute('''SELECT name FROM professors''')]
         conn.close()
         return render_template('professors.html', professors=professors)
