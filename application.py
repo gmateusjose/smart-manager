@@ -12,6 +12,15 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/students', methods=['GET', 'POST'])
+def students():
+    # Define a route to deal with students
+    if request.method == 'POST':
+        return render_template('students.html')
+    else:
+        return render_template('students.html')
+
+
 @app.route('/professors', methods=['GET', 'POST'])
 def professors():
     # Define a route to deal with professors

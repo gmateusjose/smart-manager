@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<h1>Students</h1>
+
+	<legend>Add a new student</legend>
+	<form action="/students" method="post">
+		<input type="text" id="add-field" name="add-field" placeholder="Student's name">
+		<label for="scholar">scholar</label>
+		<input type="checkbox" id="scholar" name="scholar" value="Scholarship">
+		<input type="number" id="value" name="value" placeholder="Monthly payment" min="0">
+		<label for="teacher">Teacher</label>
+		<select id="teacher" name="teacher">
+			<option value="">Select a teacher</option>
+			{% for professor in professors %}
+				<option value="{{ professor }}">{{ professor}}</option>
+			{% endfor %}
+		</select>
+		<button type="submit" id="add-button" name="add-button">Add</button>
+	</form>
+
+	<legend>Update or remove a student</legend>
+	<form action="/students" method="post">
+		<label>Student</label>
+		<input type="search" name="search-student" id="search-student" placeholder="Search student">
+		<button type="submit" id="rem-button" name="rem-button">Remove</button>
+		<button type="submit" id="upd-button" name="upd-button">Update</button>
+	</form>
+
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Teacher<th>
+			<th>Value</th>
+			<th>Scholarship</th>
+		</tr>
+		{% for student in students %}
+		{% endfor %}
+	</table>
+{% endblock %}
