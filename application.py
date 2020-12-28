@@ -16,32 +16,25 @@ def index():
 def professors():
     # Define a route to deal with professors
     if request.method == 'POST':
+        print(request.form.keys())
+        # Deciding if the form will add or will delete
         conn = sqlite3.connect('smart-fluent.db')
         c = conn.cursor() 
     
-        # Creating the professors table
-        c.execute('''
-        CREATE TABLE IF NOT EXISTS professors (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE
-        );''') 
+        # Creating all the pertinent tables
+        c.executescript(open('queries/create_tables.sql').read())
         professor = (request.form.get('add-field'),)
         
-        print(professor)
         c.execute('''INSERT INTO professors (name) VALUES (?)''', professor)
         conn.commit()
         conn.close()
-        return redirect('/')
+        return redirect('/professors')
     else:
         conn = sqlite3.connect('smart-fluent.db')
         c = conn.cursor() 
     
         # Creating the professors table
-        c.execute('''
-        CREATE TABLE IF NOT EXISTS professors (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE
-        );''') 
+        c.executescript(open('queries/create_tables.sql').read()) 
         
         professors = [row[0] for row in c.execute('''SELECT name FROM professors''')]
         conn.close()
