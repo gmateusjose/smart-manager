@@ -22,7 +22,12 @@
 	<legend>Update or remove a student</legend>
 	<form action="/students" method="post">
 		<label>Student</label>
-		<input type="search" name="search-student" id="search-student" placeholder="Search student">
+		<input list="student-list" name="search-student" id="search-student" placeholder="Search student">
+		<datalist id="student-list">
+			{% for student in students %}
+				<option value="{{ student['name'] }}">
+			{% endfor %}
+		</datalist>
 		<button type="submit" id="rem-button" name="rem-button">Remove</button>
 		<button type="submit" id="upd-button" name="upd-button">Update</button>
 	</form>
