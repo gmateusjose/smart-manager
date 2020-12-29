@@ -37,11 +37,11 @@
 		</tr>
 		{% for student in students %}
 			<tr>
-				<td>{{ student[0] }}</td>
-				<td>{{ student[1] }}</td>
-				<td>{{ student[2] }}</td>
-				<td>{{ student[3] }}</td>
-				<td>{{ student[4] }}</td>
+				<td>{{ student['id'] }}</td>
+				<td>{{ student['name'] }}</td>
+				<td>{{ student['teacher'] }}</td>
+				<td>{{ student['payment'] }}</td>
+				<td>{{ student['scholar'] }}</td>
 			</tr>
 		{% endfor %}
 	</table>
