@@ -5,12 +5,12 @@
 
 	<legend>Add a new student</legend>
 	<form action="/students" method="post">
-		<input type="text" id="add-field" name="add-field" placeholder="Student's name">
+		<input type="text" id="add-field" name="add-field" placeholder="Student's name" required>
 		<label for="scholar">scholar</label>
 		<input type="checkbox" id="scholar" name="scholar" value="scholar">
-		<input type="number" id="value" name="value" placeholder="Monthly payment" min="0">
+		<input type="number" id="value" name="value" placeholder="Monthly payment" min="0" required>
 		<label for="teacher">Teacher</label>
-		<select id="teacher" name="teacher">
+		<select id="teacher" name="teacher" required>
 			<option value="">Select a teacher</option>
 			{% for professor in professors %}
 				<option value="{{ professor }}">{{ professor}}</option>
