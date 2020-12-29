@@ -38,6 +38,17 @@ def students():
                 VALUES (?, ?, ?, ?)
                 ''', (student, teacher_id, monthly, scholar))
         
+        # Verify if a form to delete
+        elif 'rem-button' in request.form.keys():
+            student_name = request.form.get('search-student').lower().strip()
+            c.execute('''
+                DELETE FROM students WHERE name = ?
+                ''', (student_name,))
+        
+        # Verify if is a form to update some data
+        else:
+            pass
+
         conn.commit()
         conn.close()
         return redirect('/students')
