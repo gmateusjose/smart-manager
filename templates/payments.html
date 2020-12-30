@@ -29,7 +29,7 @@
 	
 	<script>
 		var students = {
-			{% for student in students %}
+  		{% for student in students %}
 				'{{ student['name'] }}' : {{ student['value'] }},
 			{% endfor %}
 		};
