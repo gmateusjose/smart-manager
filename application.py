@@ -9,9 +9,42 @@ app = Flask(__name__)
 def index():
     # Define a main route for the application
     if request.method == 'POST':
-        return redirect('/')
+        year = request.form.get('year')
+        month = request.form.get('month')
+
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+        
+        c.execute('''SELECT month FROM payments GROUP BY month''')
+        months = [row[0] for row in c.fetchall()]
+
+        c.execute('''SELECT year FROM payments GROUP BY year''')
+        years = [row[0] for row in c.fetchall()]
+
+        c.execute('''SELECT name FROM professors ''')
+        professors = []
+        
+        for row in c.fetchall():
+            professor = {
+                'name': row[0].title()
+            }
+
+            professors.append(professor)
+
+        return render_template('index.html', years=years, months=months, \
+            professors=professors)
     else:
-        return render_template('index.html')
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+        
+        c.execute('''SELECT month FROM payments GROUP BY month''')
+        months = [row[0] for row in c.fetchall()]
+
+        c.execute('''SELECT year FROM payments GROUP BY year''')
+        years = [row[0] for row in c.fetchall()]
+        return render_template('index.html', years=years, months=months)
 
 
 @app.route('/payments', methods=['GET', 'POST'])

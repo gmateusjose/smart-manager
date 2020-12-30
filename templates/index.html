@@ -4,14 +4,14 @@
   <h1>Index page</h1>
   <legend>Retrieve data from:</legend>
   <form action="/" method="post">
- 		<select required>
+ 		<select name="month" required>
 			<option value="">Month</option>
 			{% for month in months %}
 				<option value="{{ month }}">{{ month }}</option>
 			{% endfor %}
 		</select>
 
-		<select required>
+		<select name="year" required>
 			<option value="">Year</option>
 			{% for year in years %}
 				<option value="{{ year }}">{{ year }}</option>
@@ -19,6 +19,10 @@
 		</select>
 		<button type="submit">Retrieve</button>
   </form>
+	
+	{% for professor in professors %}
+		<legend>Teacher: {{ professor['name'] }}</legend>
+	{% endfor %}
 
 	<script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}
