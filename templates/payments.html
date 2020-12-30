@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Payments</h1>
+  
+  <legend>Add a new payment</legend>
+	<form action="/payments" method="post">
+		<select id="student" required>
+			<option value="">Select a student</option>
+			{% for student in students %}
+				<option value="{{ student['name'] }}">{{ student['name'] }}</option>
+			{% endfor %}
+		</select>
+		<input type="number" id="payment" min="0" placeholder="Student's payment" required readonly>
+		<input type="month" placeholder="month paid" required>
+		<button type="submit">Add payment</button>
+	</form>
+
+	</legend>List all the payments done</legend>
+  <table>
+  	<tr>
+			<th>Datetime</th>
+			<th>Student</th>
+			<th>Value</th>
+			<th>Month</th>
+		</tr>
+	</tr>
+  </table>
+	
+	<script>
+		let select_student = document.querySelector('#student');
+		select_student.onchange = function() {
+			if (select_student.value === '') {
+				document.querySelector('#payment').value = '';
+			} else {
+				for (var i = 0; i < select_student.options.length; i++){
+					console.log(select_student.options[i])
+				}
+				document.querySelector('#payment').value = '50';
+			}
+		}
+	</script>
+{% endblock %}
