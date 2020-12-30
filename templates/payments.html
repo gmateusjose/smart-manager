@@ -5,14 +5,26 @@
   
   <legend>Add a new payment</legend>
 	<form action="/payments" method="post">
-		<select id="student" required>
+		<select id="student" name="student" required>
 			<option value="">Select a student</option>
 			{% for student in students %}
 				<option value="{{ student['name'] }}">{{ student['name'] }}</option>
 			{% endfor %}
 		</select>
-		<input type="number" id="payment" min="0" placeholder="Student's payment" required readonly>
-		<input type="month" placeholder="month paid" required>
+		<input type="number" id="payment" name="payment" min="0" placeholder="Student's payment" required readonly>
+		<select id="month" name="month" required>
+			<option value="">Month</option>
+			{% for month in range(1, 13) %}
+				<option value="{{ month }}">{{ month }}</option>
+			{% endfor %}
+		</select>
+		
+		<select id="year" name="year" required>
+			<option value="">Year</option>
+			{% for year in range(2020, 2031) %}
+				<option value="{{ year }}">{{ year }}</option>
+			{% endfor %}
+		</select>
 		<button type="submit" id="submit-payment" disabled>Add payment</button>
 	</form>
 

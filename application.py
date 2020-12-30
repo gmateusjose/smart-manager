@@ -2,7 +2,6 @@ import sqlite3
 
 from flask import Flask, render_template, request, redirect
 
-
 app = Flask(__name__)
 
 
@@ -16,7 +15,8 @@ def index():
 def payments():
     # Define a route to deal with payments
     if request.method == 'POST':
-        redirect('/payments')
+        print(request.form)
+        return redirect('/payments')
     else:
         conn = sqlite3.connect('smart-fluent.db')
         c = conn.cursor()
