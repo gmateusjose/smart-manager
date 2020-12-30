@@ -12,6 +12,15 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/payments', methods=['GET', 'POST'])
+def payments():
+    # Define a route to deal with payments
+    if request.method == 'POST':
+        redirect('/payments')
+    else:
+        return render_template('payments.html')
+
+
 @app.route('/students', methods=['GET', 'POST'])
 def students():
     # Define a route to deal with students
