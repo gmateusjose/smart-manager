@@ -15,6 +15,10 @@ def index():
 def payments():
     # Define a route to deal with payments
     if request.method == 'POST':
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+
         print(request.form)
         return redirect('/payments')
     else:
