@@ -24,7 +24,7 @@ def payments():
 
         students = []
         for row in c.execute('''SELECT name, monthly FROM students'''):
-            student = {'name': row[0], 'value': row[1]}
+            student = {'name': row[0].title(), 'value': row[1]}
             students.append(student)
         
         conn.close()

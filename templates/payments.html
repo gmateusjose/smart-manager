@@ -13,7 +13,7 @@
 		</select>
 		<input type="number" id="payment" min="0" placeholder="Student's payment" required readonly>
 		<input type="month" placeholder="month paid" required>
-		<button type="submit">Add payment</button>
+		<button type="submit" id="submit-payment" disabled>Add payment</button>
 	</form>
 
 	</legend>List all the payments done</legend>
@@ -28,15 +28,19 @@
   </table>
 	
 	<script>
-		let select_student = document.querySelector('#student');
-		select_student.onchange = function() {
-			if (select_student.value === '') {
+		var students = {
+			{% for student in students %}
+				'{{ student['name'] }}' : {{ student['value'] }},
+			{% endfor %}
+		};
+		
+		document.querySelector('#student').onchange = function () {
+			if (document.querySelector('#student').value === ''){
+				document.querySelector('#submit-payment').disabled = true;
 				document.querySelector('#payment').value = '';
 			} else {
-				for (var i = 0; i < select_student.options.length; i++){
-					console.log(select_student.options[i])
-				}
-				document.querySelector('#payment').value = '50';
+				document.querySelector('#payment').value = students[document.querySelector('#student').value];
+				document.querySelector('#submit-payment').disabled = false;
 			}
 		}
 	</script>
