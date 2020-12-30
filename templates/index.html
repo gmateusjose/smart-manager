@@ -2,4 +2,23 @@
 
 {% block body %}
   <h1>Index page</h1>
+  <legend>Retrieve data from:</legend>
+  <form action="/" method="post">
+ 		<select required>
+			<option value="">Month</option>
+			{% for month in months %}
+				<option value="{{ month }}">{{ month }}</option>
+			{% endfor %}
+		</select>
+
+		<select required>
+			<option value="">Year</option>
+			{% for year in years %}
+				<option value="{{ year }}">{{ year }}</option>
+			{% endfor %}
+		</select>
+		<button type="submit">Retrieve</button>
+  </form>
+
+	<script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}

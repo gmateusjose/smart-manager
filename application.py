@@ -5,10 +5,13 @@ from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    # Define a main route for the application    
-    return render_template('index.html')
+    # Define a main route for the application
+    if request.method == 'POST':
+        return redirect('/')
+    else:
+        return render_template('index.html')
 
 
 @app.route('/payments', methods=['GET', 'POST'])
