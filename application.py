@@ -64,6 +64,39 @@ def index():
         return render_template('index.html', years=years, months=months)
 
 
+@app.route('/expenses', methods=['GET', 'POST'])
+def expenses():
+    # Define a route to deal with expenses
+    if request.method == 'POST':
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+        
+        for item in request.form.keys():
+            try:
+                c.execute('''INSERT INTO expenses (description, value) VALUES
+                (?, ?)''', (item, float(request.form.get(item))))
+            except:
+                c.execute('''UPDATE expenses SET value = ? WHERE description =
+                ?''', (float(request.form.get(item)), item))
+        
+        conn.commit()
+        conn.close()
+        return render_template('expenses.html')
+    else:
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+        c.execute('''SELECT * FROM expenses''')
+        
+        expenses = {}
+        for row in c.fetchall():
+            expenses[row[0]] = float(row[1])
+        
+        conn.close()
+        return render_template('expenses.html', expenses=expenses)
+
+
 @app.route('/payments', methods=['GET', 'POST'])
 def payments():
     # Define a route to deal with payments

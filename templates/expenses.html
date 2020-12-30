@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+ <h1>Expenses</h1>
+
+ <legend>Set the actual fixed expenses:</legend>
+ <form action="/expenses" method="post">
+  <label>Maintenance</label>
+  <input type="number" name="maint" value="{{ expenses['maint'] }}" min="0" required>
+  
+  <label>Recepcionist</label>
+  <input type="number" name="recep" value="{{ expenses['recep'] }}" min="0" required>
+  
+  <label>Coordinator</label>
+  <input type="number" name="coord" value="{{ expenses['coord'] }}" min="0" required>
+  <button type="submit">Set</button>
+ </form>
+{% endblock %}
