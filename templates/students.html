@@ -22,7 +22,6 @@
 	<legend>Update or remove a student</legend>
 	<form action="/students" method="post">
 		<label>Student</label>
-		<input list="student-list" name="search-student" id="search-student" placeholder="Search student" required>
 		<select id="search-student" name="search-student" required>
 			<option value="">Select a student</option>
 				{% for student in students %}
