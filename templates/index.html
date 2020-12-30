@@ -22,6 +22,18 @@
 	
 	{% for professor in professors %}
 		<legend>Teacher: {{ professor['name'] }}</legend>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Payment</th>
+				<th>Scholar</th>
+			</tr>
+			{% for row in professor['data'] %}
+				<td>{{ row[0] }}</td>
+				<td>{{ row[1] }}</td>
+				<td>{{ row[2] }}</td>
+			{% endfor %}
+		</table>
 	{% endfor %}
 
 	<script src="{{ url_for('static', filename='index.js') }}"></script>

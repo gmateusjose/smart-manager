@@ -22,13 +22,29 @@ def index():
         c.execute('''SELECT year FROM payments GROUP BY year''')
         years = [row[0] for row in c.fetchall()]
 
-        c.execute('''SELECT name FROM professors ''')
+        c.execute('''SELECT name, id FROM professors ''')
         professors = []
         
         for row in c.fetchall():
             professor = {
-                'name': row[0].title()
+                'name': row[0].title(),
+                'data': []
             }
+
+            c.execute('''SELECT name, monthly, scholar FROM payments
+                JOIN students ON payments.student_id = students.id
+                WHERE (month = ? AND year = ?) AND students.teacher_id = ?
+                ''', (month, year, int(row[1])))
+            
+            # professor['data'] = c.fetchall()
+            for row in c.fetchall():
+                if int(row[2]) == 1: 
+                    data = (row[0].title(), '${:,.2f}'.format(float(row[1])), \
+                    'scholar')
+                else:
+                    data = (row[0].title(), '${:,.2f}'.format(float(row[1])), \
+                    '')
+                professor['data'].append(data)
 
             professors.append(professor)
 
@@ -44,6 +60,7 @@ def index():
 
         c.execute('''SELECT year FROM payments GROUP BY year''')
         years = [row[0] for row in c.fetchall()]
+
         return render_template('index.html', years=years, months=months)
 
 
