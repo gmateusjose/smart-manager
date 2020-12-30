@@ -25,12 +25,12 @@
 		<select id="search-student" name="search-student" required>
 			<option value="">Select a student</option>
 				{% for student in students %}
-					<option value="{{ student }}">{{ student }}</option>
+					<option value="{{ student['name'] }}">{{ student['name'] }}</option>
 				{% endfor %}
 			</option>
 		</select>
 		<button type="submit" id="rem-button" name="rem-button" disabled>Remove</button>
-		<button type="submit" id="upd-button" name="upd-button">Update</button>
+		<button type="submit" id="upd-button" name="upd-button" disabled>Update</button>
 	</form>
 
 	<table>
