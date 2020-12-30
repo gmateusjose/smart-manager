@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Payments</h1>
+  
+  <legend>Add a new payment</legend>
+	<form action="/payments" method="post">
+		<select id="student" name="student" required>
+			<option value="">Select a student</option>
+			{% for student in students %}
+				<option value="{{ student['name'] }}">{{ student['name'] }}</option>
+			{% endfor %}
+		</select>
+		<input type="number" id="payment" name="payment" min="0" placeholder="Student's payment" required readonly>
+		<select id="month" name="month" required>
+			<option value="">Month</option>
+			{% for month in range(1, 13) %}
+				<option value="{{ month }}">{{ month }}</option>
+			{% endfor %}
+		</select>
+		
+		<select id="year" name="year" required>
+			<option value="">Year</option>
+			{% for year in range(2020, 2031) %}
+				<option value="{{ year }}">{{ year }}</option>
+			{% endfor %}
+		</select>
+		<button type="submit" id="submit-payment" disabled>Add payment</button>
+	</form>
+
+	</legend>List all the payments done</legend>
+  <table>
+  	<tr>
+			<th>Datetime</th>
+			<th>Student</th>
+			<th>Value</th>
+			<th>Month</th>
+		</tr>
+		{% for payment in payments %}
+		<tr>
+			<td>{{ payment['datetime'] }}</td>
+			<td>{{ payment['student'] }}</td>
+			<td>{{ payment['value'] }}</td>
+			<td>{{ payment['month'] }}</td>
+		</tr>
+		{% endfor %}
+  </table>
+	
+	<script>
+		var students = {
+  		{% for student in students %}
+				'{{ student['name'] }}' : {{ student['value'] }},
+			{% endfor %}
+		};
+		
+		document.querySelector('#student').onchange = function () {
+			if (document.querySelector('#student').value === ''){
+				document.querySelector('#submit-payment').disabled = true;
+				document.querySelector('#payment').value = '';
+			} else {
+				document.querySelector('#payment').value = students[document.querySelector('#student').value];
+				document.querySelector('#submit-payment').disabled = false;
+			}
+		}
+	</script>
+{% endblock %}
