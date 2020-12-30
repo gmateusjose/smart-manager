@@ -18,7 +18,17 @@ def payments():
     if request.method == 'POST':
         redirect('/payments')
     else:
-        return render_template('payments.html')
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+
+        students = []
+        for row in c.execute('''SELECT name, monthly FROM students'''):
+            student = {'name': row[0], 'value': row[1]}
+            students.append(student)
+        
+        conn.close()
+        return render_template('payments.html', students=students)
 
 
 @app.route('/students', methods=['GET', 'POST'])
