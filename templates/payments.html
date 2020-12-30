@@ -36,7 +36,14 @@
 			<th>Value</th>
 			<th>Month</th>
 		</tr>
-	</tr>
+		{% for payment in payments %}
+		<tr>
+			<td>{{ payment['datetime'] }}</td>
+			<td>{{ payment['student'] }}</td>
+			<td>{{ payment['value'] }}</td>
+			<td>{{ payment['month'] }}</td>
+		</tr>
+		{% endfor %}
   </table>
 	
 	<script>

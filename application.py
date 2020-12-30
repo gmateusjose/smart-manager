@@ -19,7 +19,21 @@ def payments():
         c = conn.cursor()
         c.executescript(open('queries/create_tables.sql').read())
 
-        print(request.form)
+        student_name = request.form.get('student').lower().strip()
+        c.execute('''SELECT id, teacher_id FROM students WHERE name = ?''', \
+            (student_name,))
+
+        identifiers = c.fetchone()
+        month = int(request.form.get('month')) 
+        year = int(request.form.get('year'))
+
+        c.execute('''
+            INSERT INTO payments (student_id, teacher_id, month, year) VALUES
+            (?, ?, ?, ?)
+        ''', (identifiers[0], identifiers[1], month, year))
+        
+        conn.commit()
+        conn.close()
         return redirect('/payments')
     else:
         conn = sqlite3.connect('smart-fluent.db')
@@ -30,9 +44,23 @@ def payments():
         for row in c.execute('''SELECT name, monthly FROM students'''):
             student = {'name': row[0].title(), 'value': row[1]}
             students.append(student)
+
+        payments = []
+        c.execute('''SELECT date_payment, name, monthly, month, year FROM
+        students JOIN payments ON students.id = payments.student_id''')
         
+        for row in c.fetchall():
+            payment = {
+                'datetime': row[0],
+                'student': row[1].title(),
+                'value': '${:,.2f}'.format(row[2]),
+                'month': f"{row[4]}-{int(row[3]):02}"
+            }
+            payments.append(payment)
+
         conn.close()
-        return render_template('payments.html', students=students)
+        return render_template('payments.html', students=students, \
+            payments=payments)
 
 
 @app.route('/students', methods=['GET', 'POST'])
