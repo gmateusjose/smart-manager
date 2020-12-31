@@ -28,7 +28,10 @@ def index():
         for row in c.fetchall():
             professor = {
                 'name': row[0].title(),
-                'data': []
+                'data': [],
+                'items': 0,
+                'results': [],
+                'total': 0
             }
 
             c.execute('''SELECT name, monthly, scholar FROM payments
@@ -36,33 +39,32 @@ def index():
                 WHERE (month = ? AND year = ?) AND students.teacher_id = ?
                 ''', (month, year, int(row[1])))
 
-            # Fetch all the professor data 
+            # Fetch all the professor data     
             for row in c.fetchall():
                 if int(row[2]) == 1: 
-                    data = (row[0].title(), '${:,.2f}'.format(float(row[1])), \
-                    'scholar')
+                    data = (row[0].title(), float(row[1]), 'scholar')
                 else:
-                    data = (row[0].title(), '${:,.2f}'.format(float(row[1])), \
-                    '')
+                    data = (row[0].title(), float(row[1]), '')
+                
                 professor['data'].append(data)
-            
-            professor['items'] = len(data)
+                professor['items'] += 1
+
             professors.append(professor)
 
             # Compute all the expenses
             expenses = {}
             c.execute('''SELECT description, value FROM expenses''')
             for row in c.fetchall():
-                expenses[row[0]] = '${:,.2f}'.format(float(row[1]))
-
-            # Compute all the results
-            c.execute('''SELECT SUM(value) FROM expenses''')
-            sum_expenses = c.fetchall()[0][0]
-            results = {'teacher': '${:,.2f}'.format(sum_expenses),
-                'school': '${:,.2f}'.format(sum_expenses)}
-
+                expenses[row[0]] = float(row[1])
+            
+            for professor in professors:
+                c.execute('''SELECT SUM(value) FROM expenses''')
+                total_expenses = c.fetchall()[0][0]
+                professor['results'] = [(row[1] - total_expenses)/2 for row in professor['data']]
+                professor['total'] = sum(professor['results'])
+            
         return render_template('index.html', years=years, months=months, \
-            professors=professors, expenses=expenses, results=results)
+            professors=professors, expenses=expenses, zip=zip)
     else:
         conn = sqlite3.connect('smart-fluent.db')
         c = conn.cursor()
