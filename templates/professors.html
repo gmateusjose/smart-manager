@@ -1,27 +1,28 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h1>Professors</h1>
-	<legend>Add a new teacher:</legend>
 	<form action="/professors" method="post">
-		<input type="text" id="add-field" name="add-field" placeholder="Teacher's name" required>
-		<button type="submit" id="add-button" name="add-button" disabled>Add</button>
+		<legend>Add a new teacher:</legend>
+		<input type="text" id="add-field" name="add-field"
+		placeholder="Teacher's name" class="form-control" required>
+		<button class="btn btn-dark" type="submit"
+		id="add-button" name="add-button" disabled>Add</button>
 	</form>
 
-	<legend>Remove a teacher:</legend>
 	<form action="/professors" method="post">
-		<select id="rem-field" name="rem-field" required>
+		<legend>Remove a teacher:</legend>
+		<select id="rem-field" name="rem-field" class="form-select" required>
 			<option value="">Select a teacher</option>
 			{% for professor in professors %}
 				<option value="{{ professor }}">{{ professor }}</option>
 			{% endfor %}
 		</select>
-		<button type="submit" id="rem-button" name="rem-button" disabled>Remove</button>
+		<button class="btn btn-dark" type="submit"
+		id="rem-button" name="rem-button" disabled>Remove</button>
 	</form>
 	
 	<p>{{ error_msg }}</p>
 
-	<legend>Teachers:</legend>
 	<ul class="list-group">
 		{% for professor in professors %}
 			<li class="list-group-item list-group-item-dark">{{ professor }}</li>
