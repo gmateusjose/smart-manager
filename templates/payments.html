@@ -28,14 +28,15 @@
 		<button type="submit" id="submit-payment" disabled>Add payment</button>
 	</form>
 
-	</legend>List all the payments done</legend>
-  <table>
-  	<tr>
+	<legend>List all the payments done</legend>
+	<div class="table-responsive">
+  <table class="table table-sm table-hover">
+  	<thead class="table-dark">
 			<th>Datetime</th>
 			<th>Student</th>
 			<th>Value</th>
 			<th>Month</th>
-		</tr>
+		</thead>
 		{% for payment in payments %}
 		<tr>
 			<td>{{ payment['datetime'] }}</td>
@@ -45,6 +46,7 @@
 		</tr>
 		{% endfor %}
   </table>
+	</div>
 	
 	<script>
 		var students = {

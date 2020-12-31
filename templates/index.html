@@ -22,17 +22,19 @@
 	
 	{% for professor in professors %}
 		<legend>Teacher: {{ professor['name'] }}</legend>
-		<table>
-			<tr>
-				<th>Name</th>
-				<th>Payment</th>
-				<th>Scholar</th>
-				<th>Maint.</th>
-				<th>Recep.</th>
-				<th>Coord.</th>
-				<th>Teacher</th>
-				<th>School</th>
-			</tr>
+		
+		<div class="table-responsive">
+		<table class="table table-sm table-hover">
+			<thead class="table-dark">
+				<th scope="col">Name</th>
+				<th scope="col">Payment</th>
+				<th scope="col">Scholar</th>
+				<th scope="col">Maint.</th>
+				<th scope="col">Recep.</th>
+				<th scope="col">Coord.</th>
+				<th scope="col">Teacher</th>
+				<th scope="col">School</th>
+			</thead>
 			{% for data_row, results_row in zip(professor['data'], professor['results']) %}
 				<tr>
 					<td>{{ data_row[0] }}</td>
@@ -45,7 +47,7 @@
 					<td>{{ '${:,.2f}'.format(results_row) }}</td>
 				</tr>
 			{% endfor %}
-			</tfoot>
+			</tfoot">
 				<th colspan="3">Total</th>
 				<th>{{ '${:,.2f}'.format(expenses['maint'] * professor['items']) }}</th>
 				<th>{{ '${:,.2f}'.format(expenses['recep'] * professor['items']) }}</th>
@@ -54,6 +56,7 @@
 				<th>{{ '${:,.2f}'.format(professor['total']) }}</th>
 			</tfoot>
 		</table>
+		</div>
 	{% endfor %}
 
 	<script src="{{ url_for('static', filename='index.js') }}"></script>
