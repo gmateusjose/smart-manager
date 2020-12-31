@@ -22,9 +22,9 @@
 	<p>{{ error_msg }}</p>
 
 	<legend>Teachers:</legend>
-	<ul>
+	<ul class="list-group">
 		{% for professor in professors %}
-			<li>{{ professor }}</li>
+			<li class="list-group-item list-group-item-dark">{{ professor }}</li>
 		{% endfor %}
 	</ul>
 
