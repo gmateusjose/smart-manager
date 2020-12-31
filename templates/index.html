@@ -27,12 +27,32 @@
 				<th>Name</th>
 				<th>Payment</th>
 				<th>Scholar</th>
+				<th>Maint.</th>
+				<th>Recep.</th>
+				<th>Coord.</th>
+				<th>Teacher</th>
+				<th>School</th>
 			</tr>
 			{% for row in professor['data'] %}
-				<td>{{ row[0] }}</td>
-				<td>{{ row[1] }}</td>
-				<td>{{ row[2] }}</td>
+				<tr>
+					<td>{{ row[0] }}</td>
+					<td>{{ row[1] }}</td>
+					<td>{{ row[2] }}</td>
+					<td>{{ expenses['maint'] }}</td>
+					<td>{{ expenses['recep'] }}</td>
+					<td>{{ expenses['coord'] }}</td>
+					<td>{{ results['teacher'] }}</td>
+					<td>{{ results['school'] }}</td>
+				</tr>
 			{% endfor %}
+			</tfoot>
+				<th colspan="3">Total</th>
+				<td>{{ expenses['maint'] * professor['items'] }}</td>
+				<td>{{ expenses['recep'] * professor['items'] }}</td>
+				<td>{{ expenses['coord'] * professor['items'] }}</td>
+				<td>{{ '${:2f}'.format(20) }}</td>
+				<td>...</td>
+			</tfoot>
 		</table>
 	{% endfor %}
 

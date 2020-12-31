@@ -35,8 +35,8 @@ def index():
                 JOIN students ON payments.student_id = students.id
                 WHERE (month = ? AND year = ?) AND students.teacher_id = ?
                 ''', (month, year, int(row[1])))
-            
-            # professor['data'] = c.fetchall()
+
+            # Fetch all the professor data 
             for row in c.fetchall():
                 if int(row[2]) == 1: 
                     data = (row[0].title(), '${:,.2f}'.format(float(row[1])), \
@@ -45,11 +45,24 @@ def index():
                     data = (row[0].title(), '${:,.2f}'.format(float(row[1])), \
                     '')
                 professor['data'].append(data)
-
+            
+            professor['items'] = len(data)
             professors.append(professor)
 
+            # Compute all the expenses
+            expenses = {}
+            c.execute('''SELECT description, value FROM expenses''')
+            for row in c.fetchall():
+                expenses[row[0]] = '${:,.2f}'.format(float(row[1]))
+
+            # Compute all the results
+            c.execute('''SELECT SUM(value) FROM expenses''')
+            sum_expenses = c.fetchall()[0][0]
+            results = {'teacher': '${:,.2f}'.format(sum_expenses),
+                'school': '${:,.2f}'.format(sum_expenses)}
+
         return render_template('index.html', years=years, months=months, \
-            professors=professors)
+            professors=professors, expenses=expenses, results=results)
     else:
         conn = sqlite3.connect('smart-fluent.db')
         c = conn.cursor()
