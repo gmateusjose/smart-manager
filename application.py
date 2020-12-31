@@ -97,7 +97,7 @@ def expenses():
         
         conn.commit()
         conn.close()
-        return render_template('expenses.html')
+        return redirect('/expenses')
     else:
         conn = sqlite3.connect('smart-fluent.db')
         c = conn.cursor()
