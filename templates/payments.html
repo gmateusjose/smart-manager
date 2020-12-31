@@ -1,36 +1,56 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+<div class="container mt-4">
 	<!-- Form to add a new payment -->
-	<form action="/payments" method="post">
+	<form action="/payments" method="post" class="row g-3">
   	<legend>Add a new payment</legend>
-		<select id="student" name="student" class="form-select" required>
-			<option value="">Select a student</option>
-			{% for student in students %}
-				<option value="{{ student['name'] }}">{{ student['name'] }}</option>
-			{% endfor %}
-		</select>
-
-		<input type="number" id="payment" name="payment" min="0"
-		placeholder="Student's payment" class="form-control" required readonly>
-		<select id="month" name="month" class="form-select" required>
-			<option value="">Month</option>
-			{% for month in range(1, 13) %}
-				<option value="{{ month }}">{{ month }}</option>
-			{% endfor %}
-		</select>
 		
-		<select id="year" name="year" class="form-select" required>
-			<option value="">Year</option>
-			{% for year in range(2020, 2031) %}
-				<option value="{{ year }}">{{ year }}</option>
-			{% endfor %}
-		</select>
-		<button type="submit" id="submit-payment" class="btn btn-dark" disabled>Add payment</button>
+		<div class="col-md-5">
+			<select id="student" name="student" class="form-select" required>
+				<option value="">Select a student</option>
+				{% for student in students %}
+					<option value="{{ student['name'] }}">{{ student['name'] }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		
+		<div class="col-md-3">
+			<div class="input-group mb-3">
+				<span class="input-group-text">$</span>
+				<input type="number" id="payment" name="payment" min="0"
+				placeholder="Student's payment" class="form-control" required readonly>
+			</div>
+		</div>
+		
+		<div class="col-md-2">
+			<div class="input-group mb-3">
+				<select id="month" name="month" class="form-select" required>
+					<option value="">Month</option>
+					{% for month in range(1, 13) %}
+						<option value="{{ month }}">{{ month }}</option>
+					{% endfor %}
+				</select>
+				<span class="input-group-text" id="month-selector">th</span>
+			</div>
+		</div>
+		
+		<div class="col-md-2">
+			<select id="year" name="year" class="form-select" required>
+				<option value="">Year</option>
+				{% for year in range(2020, 2031) %}
+					<option value="{{ year }}">{{ year }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		
+		<div class="col-12">
+			<button type="submit" id="submit-payment" class="btn btn-dark" disabled>Add payment</button>
+		</div>
 	</form>
 
 	<!-- Table to render all the payments -->
-	<div class="table-responsive m-4">
+	<div class="table-responsive mt-4">
   <table class="table table-sm table-hover">
   	<thead class="table-dark">
 			<th>Datetime</th>
@@ -48,7 +68,7 @@
 		{% endfor %}
   </table>
 	</div>
-	
+</div>
 	<script>
 		var students = {
   		{% for student in students %}
@@ -63,6 +83,18 @@
 			} else {
 				document.querySelector('#payment').value = students[document.querySelector('#student').value];
 				document.querySelector('#submit-payment').disabled = false;
+			}
+		}
+
+		document.querySelector('#month').onchange = function () {
+			if (document.querySelector('#month').value === '1'){
+				document.querySelector('#month-selector').innerHTML = 'st';
+			} else if (document.querySelector('#month').value === '2'){
+				document.querySelector('#month-selector').innerHTML = 'nd';
+			} else if (document.querySelector('#month').value === '3'){
+				document.querySelector('#month-selector').innerHTML = 'rd';
+			} else {
+				document.querySelector('#month-selector').innerHTML = 'th';
 			}
 		}
 	</script>

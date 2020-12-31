@@ -1,46 +1,66 @@
 {% extends "layout.html" %}
 
 {% block body %}
-	<legend>Add a new student</legend>
-	<form action="/students" method="post">
-		<input type="text" id="add-field" name="add-field" class="form-control"
-		placeholder="Student's name" required>
-		<input type="number" id="value" name="value" placeholder="Monthly payment"
-		class="form-control" min="0" step="0.01" required>
-		
-		<select id="teacher" name="teacher" class="form-select" required>
-			<option value="">Select a teacher</option>
-			{% for professor in professors %}
-				<option value="{{ professor }}">{{ professor}}</option>
-			{% endfor %}
-		</select>
-		
-		<div class="form-check">
-			<label class="form-check-label" for="scholar">Scholar</label>
-			<input class="form-check-input" type="checkbox" id="scholar" name="scholar" value="scholar">
+<div class="container mt-4">
+	<form action="/students" method="post" class="row g-3">
+		<legend>Add a new student</legend>
+		<div class="col-md-5">
+			<input type="text" id="add-field" name="add-field" class="form-control"
+			placeholder="Student's name" required>
 		</div>
 
-		<button type="submit" id="add-button" name="add-button"
-		class="btn btn-dark" disabled>Add</button>
-	</form>
+		<div class="col-md-2">
+			<div class="input-group mb-3">
+				<span class="input-group-text">$</span>
+				<input type="number" id="value" name="value" placeholder="Payment"
+				class="form-control" min="0" step="0.01" required>
+			</div>
+		</div>
 
-	<form action="/students" method="post">
-		<legend>Update or remove a student</legend>
-		<label for="search-student">Student</label>
-		<select id="search-student" class="form-select" name="search-student" required>
-			<option value="">Select a student</option>
-				{% for student in students %}
-					<option value="{{ student['name'] }}">{{ student['name'] }}</option>
+		<div class="col-md-3">
+			<select id="teacher" name="teacher" class="form-select" required>
+				<option value="">Select a teacher</option>
+				{% for professor in professors %}
+					<option value="{{ professor }}">{{ professor}}</option>
 				{% endfor %}
-			</option>
-		</select>
+			</select>
+		</div>
 		
-		<button type="submit" id="rem-button" class="btn btn-dark"
-		name="rem-button" disabled>Remove</button>
+		<div class="col-md-2">
+			<div class="form-check form-switch">
+				<label class="form-check-label" for="scholar">Scholar</label>
+				<input class="form-check-input" type="checkbox" id="scholar" name="scholar" value="scholar">
+			</div>
+		</div>
+		
+		<div class="col-12">
+			<button type="submit" id="add-button" name="add-button"
+			class="btn btn-dark" disabled>Add student</button>
+		</div>
+	</form>
+</div>
+
+<div class="container mt-5">
+	<form action="/students" method="post" class="row g-3">
+		<legend>Remove a student</legend>
+		<div class="col-md-5">
+			<select id="search-student" class="form-select" name="search-student" required>
+				<option value="">Select a student</option>
+					{% for student in students %}
+						<option value="{{ student['name'] }}">{{ student['name'] }}</option>
+					{% endfor %}
+				</option>
+			</select>
+		</div>
+
+		<div class="col-md-2">	
+			<button type="submit" id="rem-button" class="btn btn-dark"
+			name="rem-button" disabled>Remove student</button>
+		</div>
 	</form>
 	
 	<!-- Table to render data -->	
-	<div class="table-response m-4">
+	<div class="table-response mt-4">
 	<table class="table table-sm table-hover">
 		<thead class="table-dark">
 			<th>Name</th>
@@ -53,11 +73,13 @@
 				<td>{{ student['name'] }}</td>
 				<td>{{ student['teacher'] }}</td>
 				<td>{{ student['payment'] }}</td>
-				<td>{{ student['scholar'].title() }}</td>
+				<td>
+					<span class="badge rounded-pill bg-primary">{{ student['scholar'].title() }}</span>
+				</td>
 			</tr>
 		{% endfor %}
 	</table>
 	</div>
-
+</div>
 	<script src="{{ url_for('static', filename='students.js') }}"></script>
 {% endblock %}

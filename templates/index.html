@@ -2,26 +2,38 @@
 
 {% block body %}
 	<!-- Form to retrieve all the data -->
-  <form action="/" method="post">
+  <div class="container mt-4">
+	<form action="/" method="post" class="row g-3">
   	<legend>Retrieve data from:</legend>
- 		<select name="month" class="form-select" required>
-			<option value="">Month</option>
-			{% for month in months %}
-				<option value="{{ month }}">{{ month }}</option>
-			{% endfor %}
-		</select>
+		
+		<div class="col-md-2">
+			<div class="input-group mb-0">
+ 				<select id="month" name="month" class="form-select" required>
+					<option value="">Month</option>
+					{% for month in months %}
+						<option value="{{ month }}">{{ month }}</option>
+					{% endfor %}
+				</select>
+				<span id="month-selector" class="input-group-text">th</span>
+			</div>
+		</div>
 
-		<select name="year" class="form-select" required>
-			<option value="">Year</option>
-			{% for year in years %}
-				<option value="{{ year }}">{{ year }}</option>
-			{% endfor %}
-		</select>
-		<button type="submit" class="btn btn-dark">Retrieve</button>
-  </form>
+		<div class="col-md-2">
+			<select name="year" class="form-select" required>
+				<option value="">Year</option>
+				{% for year in years %}
+					<option value="{{ year }}">{{ year }}</option>
+				{% endfor %}
+			</select>
+		</div>
+
+		<div class="col-md-3">
+			<button type="submit" class="btn btn-dark">Retrieve</button>
+  	</div>
+		</form>
 	
 	{% for professor in professors %}	
-		<div class="table-responsive m-4">
+		<div class="table-responsive mt-4">
 			<legend>Teacher: {{ professor['name'] }}</legend>
 		<table class="table table-sm table-hover">
 			<thead class="table-dark">
@@ -38,7 +50,9 @@
 				<tr>
 					<td>{{ data_row[0] }}</td>
 					<td>{{ '${:,.2f}'.format(data_row[1]) }}</td>
-					<td>{{ data_row[2] }}</td>
+					<td>
+						<span class="badge rounded-pill bg-primary">{{ data_row[2].title() }}</span>
+					</td>
 					<td>{{ '${:,.2f}'.format(expenses['maint']) }}</td>
 					<td>{{ '${:,.2f}'.format(expenses['recep']) }}</td>
 					<td>{{ '${:,.2f}'.format(expenses['coord']) }}</td>
@@ -57,6 +71,20 @@
 		</table>
 		</div>
 	{% endfor %}
-
+	</div>
+	
+	<script>
+		document.querySelector('#month').onchange = function () {
+			if (document.querySelector('#month').value === '1'){
+				document.querySelector('#month-selector').innerHTML = 'st';
+			} else if (document.querySelector('#month').value === '2'){
+				document.querySelector('#month-selector').innerHTML = 'nd';
+			} else if (document.querySelector('#month').value === '3'){
+				document.querySelector('#month-selector').innerHTML = 'rd';
+			} else {
+				document.querySelector('#month-selector').innerHTML = 'th';
+			}
+		}
+	</script>
 	<script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}

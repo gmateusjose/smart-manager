@@ -1,33 +1,48 @@
 {% extends "layout.html" %}
 
 {% block body %}
-	<form action="/professors" method="post">
-		<legend>Add a new teacher:</legend>
-		<input type="text" id="add-field" name="add-field"
-		placeholder="Teacher's name" class="form-control" required>
-		<button class="btn btn-dark" type="submit"
-		id="add-button" name="add-button" disabled>Add</button>
-	</form>
 
-	<form action="/professors" method="post">
-		<legend>Remove a teacher:</legend>
-		<select id="rem-field" name="rem-field" class="form-select" required>
-			<option value="">Select a teacher</option>
+<div class="container mt-4">
+		<form action="/professors" method="post" class="row g-3">
+			<legend>Add a new teacher:</legend>
+			<div class="col-md-5">
+				<input type="text" id="add-field" name="add-field"
+				placeholder="Teacher's name" class="form-control" required>
+			</div>
+
+			<div class="col-md-5">
+				<button class="btn btn-dark" type="submit"
+				id="add-button" name="add-button" disabled>Add teacher</button>
+			</div>
+		</form>
+</div>
+
+<div class="container mt-5">
+		<form action="/professors" method="post" class="row g-3">
+			<legend>Remove a teacher:</legend>
+			<div class="col-md-5">
+				<select id="rem-field" name="rem-field" class="form-select" required>
+					<option value="">Select a teacher</option>
+					{% for professor in professors %}
+						<option value="{{ professor }}">{{ professor }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="col-md-5">
+				<button class="btn btn-dark" type="submit"
+				id="rem-button" name="rem-button" disabled>Remove teacher</button>
+			</div>
+		</form>
+
+		<p>{{ error_msg }}</p>
+
+		<ul class="list-group">
 			{% for professor in professors %}
-				<option value="{{ professor }}">{{ professor }}</option>
+				<li class="list-group-item list-group-item-dark">{{ professor }}</li>
 			{% endfor %}
-		</select>
-		<button class="btn btn-dark" type="submit"
-		id="rem-button" name="rem-button" disabled>Remove</button>
-	</form>
-	
-	<p>{{ error_msg }}</p>
-
-	<ul class="list-group">
-		{% for professor in professors %}
-			<li class="list-group-item list-group-item-dark">{{ professor }}</li>
-		{% endfor %}
-	</ul>
+		</ul>
+</div>
 
 	<script src="{{ url_for('static', filename='professors.js') }}"></script>
 {% endblock %}
