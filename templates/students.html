@@ -40,7 +40,7 @@
 	</form>
 	
 	<!-- Table to render data -->	
-	<div class="table-response">
+	<div class="table-response m-4">
 	<table class="table table-sm table-hover">
 		<thead class="table-dark">
 			<th>Name</th>
@@ -53,7 +53,7 @@
 				<td>{{ student['name'] }}</td>
 				<td>{{ student['teacher'] }}</td>
 				<td>{{ student['payment'] }}</td>
-				<td>{{ student['scholar'] }}</td>
+				<td>{{ student['scholar'].title() }}</td>
 			</tr>
 		{% endfor %}
 	</table>

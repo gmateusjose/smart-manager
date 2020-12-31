@@ -20,10 +20,9 @@
 		<button type="submit" class="btn btn-dark">Retrieve</button>
   </form>
 	
-	{% for professor in professors %}
-		<legend>Teacher: {{ professor['name'] }}</legend>
-		
-		<div class="table-responsive">
+	{% for professor in professors %}	
+		<div class="table-responsive m-4">
+			<legend>Teacher: {{ professor['name'] }}</legend>
 		<table class="table table-sm table-hover">
 			<thead class="table-dark">
 				<th scope="col">Name</th>
