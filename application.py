@@ -5,10 +5,96 @@ from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    # Define a main route for the application    
-    return render_template('index.html')
+    # Define a main route for the application
+    if request.method == 'POST':
+        year = request.form.get('year')
+        month = request.form.get('month')
+
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+        
+        c.execute('''SELECT month FROM payments GROUP BY month''')
+        months = [row[0] for row in c.fetchall()]
+
+        c.execute('''SELECT year FROM payments GROUP BY year''')
+        years = [row[0] for row in c.fetchall()]
+
+        c.execute('''SELECT name, id FROM professors ''')
+        professors = []
+        
+        for row in c.fetchall():
+            professor = {
+                'name': row[0].title(),
+                'data': []
+            }
+
+            c.execute('''SELECT name, monthly, scholar FROM payments
+                JOIN students ON payments.student_id = students.id
+                WHERE (month = ? AND year = ?) AND students.teacher_id = ?
+                ''', (month, year, int(row[1])))
+            
+            # professor['data'] = c.fetchall()
+            for row in c.fetchall():
+                if int(row[2]) == 1: 
+                    data = (row[0].title(), '${:,.2f}'.format(float(row[1])), \
+                    'scholar')
+                else:
+                    data = (row[0].title(), '${:,.2f}'.format(float(row[1])), \
+                    '')
+                professor['data'].append(data)
+
+            professors.append(professor)
+
+        return render_template('index.html', years=years, months=months, \
+            professors=professors)
+    else:
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+        
+        c.execute('''SELECT month FROM payments GROUP BY month''')
+        months = [row[0] for row in c.fetchall()]
+
+        c.execute('''SELECT year FROM payments GROUP BY year''')
+        years = [row[0] for row in c.fetchall()]
+
+        return render_template('index.html', years=years, months=months)
+
+
+@app.route('/expenses', methods=['GET', 'POST'])
+def expenses():
+    # Define a route to deal with expenses
+    if request.method == 'POST':
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+        
+        for item in request.form.keys():
+            try:
+                c.execute('''INSERT INTO expenses (description, value) VALUES
+                (?, ?)''', (item, float(request.form.get(item))))
+            except:
+                c.execute('''UPDATE expenses SET value = ? WHERE description =
+                ?''', (float(request.form.get(item)), item))
+        
+        conn.commit()
+        conn.close()
+        return render_template('expenses.html')
+    else:
+        conn = sqlite3.connect('smart-fluent.db')
+        c = conn.cursor()
+        c.executescript(open('queries/create_tables.sql').read())
+        c.execute('''SELECT * FROM expenses''')
+        
+        expenses = {}
+        for row in c.fetchall():
+            expenses[row[0]] = float(row[1])
+        
+        conn.close()
+        return render_template('expenses.html', expenses=expenses)
 
 
 @app.route('/payments', methods=['GET', 'POST'])
