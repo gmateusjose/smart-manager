@@ -11,6 +11,39 @@
     <title>Smart Manager</title>
   </head>
   <body>
+    <!-- adding the navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Smart Manager</span>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarToggler" aria-controls="navbarToggler"
+        aria-expanded="false" aria-label="Toogle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/students">Students</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/professors">Professors</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/payments">Payments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/expenses">Expenses</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- content block-->
     {% block body %}
     {% endblock %}
   	
